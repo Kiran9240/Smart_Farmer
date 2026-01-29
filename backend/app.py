@@ -20,11 +20,22 @@ def home():
 def register():
     if request.method == "GET":
         return render_template("register.html")
+
     try:
-        data = request.get_json()
-        name = data.get("name")
-        mobile = data.get("mobile")
-        password = data.get("password")
+        # JSON request (fetch)
+        if request.is_json:
+            data = request.get_json()
+            name = data.get("name")
+            mobile = data.get("mobile")
+            password = data.get("password")
+        else:
+            # HTML form submit
+            name = request.form.get("name")
+            mobile = request.form.get("mobile")
+            password = request.form.get("password")
+
+        if not name or not mobile or not password:
+            return jsonify({"message": "All fields required"}), 400
 
         conn = get_db_connection()
         cur = conn.cursor()
@@ -37,9 +48,10 @@ def register():
         conn.close()
 
         return jsonify({"message": "Registration successful"}), 200
+
     except mysql.connector.Error as e:
         print("Database error:", e)
-        return jsonify({"message": "Error registering user"}), 500
+        return jsonify({"message": "User already exists or DB error"}), 400
 
 # ---------------- Login (JSON) ----------------
 @app.route('/login', methods=["GET", "POST"])
@@ -118,3 +130,4 @@ def crop_videos():
 # ---------------- Run ----------------
 if __name__ == "__main__":
     app.run(debug=True)
+
