@@ -1,45 +1,103 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Farmer Registration</title>
+<meta charset="UTF-8">
+<title>Smart Farmer Registration</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body{font-family:Arial;background:#f4f7f4}
-.box{width:590px;margin:110px auto;background:#fff;padding:20px;border-radius:8px}
-input,button{width:94%;padding:10px;margin-top:10px}
-button{background:#287f53;color:white;border:none;}
-.navbar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #2e7d32;
-  padding: 15px 0;
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+  margin:0; font-family:'Roboto', sans-serif; background:#f0f4f8; display:flex; flex-direction:column; min-height:100vh;
 }
 
-.headline h1 {
-  color: white;
-  margin: 0;
-  font-size: 28px;
+/* ===== HEADER ===== */
+header {
+  background:#2e7d32; color:#fff; padding:15px 30px; text-align:center;
+  box-shadow:0 4px 6px rgba(0,0,0,0.1);
+}
+header h1 { margin:0; font-size:1.8em; }
+
+/* ===== REGISTER BOX ===== */
+.register-box {
+  background:#fff; max-width:450px; width:90%; margin:60px auto; padding:30px; border-radius:12px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.1); text-align:center;
+}
+.register-box h2 { margin-bottom:20px; color:#2e7d32; }
+
+/* ===== INPUTS ===== */
+input {
+  width:90%; padding:12px; margin:10px 0; border:1px solid #ccc; border-radius:8px; font-size:1em;
+}
+button {
+  width:95%; padding:12px; margin-top:15px; border:none; border-radius:8px;
+  background:#2e7d32; color:#fff; font-size:1em; cursor:pointer; transition:0.3s;
+}
+button:hover { background:#1b5e20; }
+
+/* ===== LINKS ===== */
+p { margin-top:15px; font-size:0.95em; color:#555; }
+p a { color:#2e7d32; text-decoration:none; font-weight:bold; }
+p a:hover { text-decoration:underline; }
+
+@media(max-width:480px){
+  .register-box { padding:20px; margin:40px auto; }
 }
 </style>
 </head>
 <body>
-<nav class="navbar">
-<div class="headline">
-  <h1>🌾 <b>Smart Farming Guidance</b></h1>
-</div>
-</nav>
-<div class="box">
-<h2>🧾 Farmer Registration</h2>
 
-<form method="post">
-<input type="text" name="name" placeholder="Farmer Name" required>
-<input type="text" name="mobile" placeholder="Mobile Number" required>
-<input type="password" name="password" placeholder="Password" required>
-<button>Register</button>
-</form>
+<header>
+  <h1>🌾 Smart Farming Guidance</h1>
+</header>
 
-<p>Already Registered? <a href="/login">Login</a></p>
+<div class="register-box">
+  <h2>🧾 Farmer Registration</h2>
+
+  <form id="registerForm">
+    <input type="text" name="name" placeholder="Farmer Name" required>
+    <input type="text" name="mobile" placeholder="Mobile Number" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <button type="submit">Register</button>
+  </form>
+
+  <p>Already Registered? <a href="/login">Login</a></p>
 </div>
+
+<script>
+// Fetch API for registration
+const registerForm = document.getElementById('registerForm');
+
+registerForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const formData = {
+    name: registerForm.name.value,
+    mobile: registerForm.mobile.value,
+    password: registerForm.password.value
+  };
+
+  try {
+    const response = await fetch('https://smart-farmer.onrender.com/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      alert('Registration Successful! Please login.');
+      window.location.href = '/login'; // Redirect to login page
+    } else {
+      alert(data.message || 'Registration failed');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Server error. Please try again later.');
+  }
+});
+</script>
 
 </body>
 </html>
