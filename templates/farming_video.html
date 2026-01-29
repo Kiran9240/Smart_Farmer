@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Crop Videos</title>
+
+<style>
+body{font-family:Arial;background:#f4f7f4;margin:0}
+
+/* NAVBAR */
+.navbar{
+ background:#2e7d32;color:#fff;
+ padding:12px 30px;
+ display:flex;justify-content:space-between
+}
+.navbar a{color:white;text-decoration:none;margin-left:20px;font-weight:bold}
+
+/* PAGE */
+.container{max-width:1100px;margin:30px auto}
+h2{text-align:center;color:#2e7d32}
+
+/* SELECT */
+select{
+ padding:10px;width:250px;
+ display:block;margin:20px auto
+}
+
+/* BUTTONS */
+.buttons{
+ display:none; /* 👈 hidden by default */
+ justify-content:center;
+ gap:20px;
+ margin-bottom:20px
+}
+.buttons button{
+ padding:10px 20px;border:none;
+ background:#2e7d32;color:white;
+ font-weight:bold;cursor:pointer;
+ border-radius:6px
+}
+.buttons button:hover{background:#1b5e20}
+
+/* VIDEOS */
+.video-grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+ gap:20px
+}
+.card{
+ background:#d1c9b2;border-radius:10px;
+ box-shadow:0 4px 10px rgba(0,0,0,.1);
+ cursor:pointer;transition:.3s
+
+}
+.card:hover{transform:scale(1.05)}
+.card img{width:100%;height:160px;object-fit:cover}
+.card h3{margin:10px;color:#2e7d32}
+.card p{margin:0 10px 10px;font-size:14px}
+
+/* MODAL */
+.modal{
+ display:none;position:fixed;
+ top:0;left:0;width:100%;height:100%;
+ background:rgba(0,0,0,.6)
+}
+.modal-content{
+ background:#fff;width:70%;max-width:700px;
+ margin:80px auto;padding:15px;
+ border-radius:10px;position:relative
+}
+.close{position:absolute;top:10px;right:15px;font-size:22px;cursor:pointer}
+iframe{width:100%;height:380px}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+ <div>🌾 Smart Farmer Guide</div>
+ <div>
+  <a href="/index">Home</a>
+      <a href="/articles">Farmer Tips</a>
+      <a href="/market">Market Prices</a>
+      <a href="/login">Login</a>
+      <a href="/register">Register</a>
+ </div>
+</div>
+
+<div class="container">
+<h2>🎥 Crop Farming Videos</h2>
+
+<!-- CROP SELECT -->
+<select id="cropSelect" onchange="showButtons()">
+  <option value="">-- Select --</option>
+    <option value="wheat">Wheat</option>
+    <option value="maize">Maize</option>
+    <option value="cotton">Cotton</option>
+    <option value="rice">Rice</option>
+    <option value="soybean">Soybean</option>
+    <option value="spinach">Spinach</option>
+    <option value="cabbage">Cabbage</option>
+    <option value="tomato">Tomato</option>
+</select>
+
+<!-- ACTION BUTTONS -->
+<div class="buttons" id="actionButtons">
+ <button onclick="loadVideos('sowing')">🌱 Crop Sowing</button>
+ 
+</div>
+
+<!-- VIDEO OUTPUT -->
+<div class="video-grid" id="videoGrid"></div>
+</div>
+
+<!-- VIDEO MODAL -->
+<div class="modal" id="videoModal">
+ <div class="modal-content">
+  <span class="close" onclick="closeVideo()">✖</span>
+  <iframe id="videoFrame" allowfullscreen></iframe>
+ </div>
+</div>
+
+<script>
+let allVideos = [];
+
+/* FETCH VIDEOS FROM DATABASE */
+fetch("/videos")
+.then(res => res.json())
+.then(data => allVideos = data);
+
+/* SHOW BUTTONS AFTER CROP SELECT */
+function showButtons(){
+ const crop = document.getElementById("cropSelect").value;
+ const btns = document.getElementById("actionButtons");
+ const grid = document.getElementById("videoGrid");
+
+ grid.innerHTML = "";
+ btns.style.display = crop ? "flex" : "none";
+}
+
+/* LOAD VIDEOS */
+function loadVideos(stage){
+ const crop = document.getElementById("cropSelect").value;
+
+ const filtered = allVideos.filter(v =>
+  v.crop_type === crop && v.stage === stage
+ );
+
+ const grid = document.getElementById("videoGrid");
+ grid.innerHTML = "";
+
+ if(filtered.length === 0){
+  grid.innerHTML = "<p style='text-align:center'>No videos found</p>";
+  return;
+ }
+
+ filtered.forEach(v=>{
+  grid.innerHTML += `
+   <div class="card" onclick="openVideo('${v.video_url}')">
+    <img src="${v.thumbnail}">
+    <h3>${v.title}</h3>
+    <p>${v.description}</p>
+   </div>
+  `;
+ });
+}
+
+function openVideo(url){
+ document.getElementById("videoFrame").src = url;
+ document.getElementById("videoModal").style.display = "block";
+}
+function closeVideo(){
+ document.getElementById("videoFrame").src = "";
+ document.getElementById("videoModal").style.display = "none";
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Contact Us</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* RESET */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* PAGE */
+body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #f4f7f4, #ccdacd);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* NAVBAR */
+.navbar {
+    width: 100%;
+    background:#2e7d32;
+    color:#fff;
+    padding:10px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.nav-links {
+    list-style:none;
+    display:flex;
+    gap:15px;
+}
+.nav-links li a {
+    color:#fff;
+    text-decoration:none;
+    font-weight:bold;
+}
+/* CARD */
+.contact-card {
+    background: #ffffff;
+    width: 420px;
+    max-width: 90%;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    margin-top: 40px;
+}
+
+/* HEADINGS */
+h1 {
+    text-align: center;
+    color: #2e7d32;
+    margin-bottom: 8px;
+}
+.subtitle {
+    text-align: center;
+    color: #555;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+/* FORM */
+label {
+    display: block;
+    margin-top: 14px;
+    font-weight: 600;
+    color: #333;
+}
+.input-group { width: 100%; }
+
+input, textarea {
+    width: 100%;
+    margin-top: 6px;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+textarea { resize: none; display: block; }
+
+/* FOCUS */
+input:focus, textarea:focus {
+    border-color: #4caf50;
+    box-shadow: 0 0 0 2px rgba(76,175,80,0.2);
+}
+
+/* BUTTON */
+button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    background: linear-gradient(135deg, #4caf50, #2e7d32);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+button:hover { opacity: 0.95; }
+
+/* MESSAGES */
+#success, #error {
+    margin-top: 15px;
+    text-align: center;
+    font-weight: bold;
+    padding: 8px;
+    border-radius: 5px;
+}
+#success { color: #2e7d32; background:#e8f5e9; }
+#error { color: #c62828; background:#ffebee; }
+
+/* MOBILE */
+@media (max-width: 480px) {
+    .contact-card { padding: 20px; }
+}
+</style>
+</head>
+
+<body>
+<nav class="navbar">
+    <div>🌾 Smart Farmer Guide</div>
+    <ul class="nav-links">
+      <li><a href="/index">Home</a></li>
+      <li><a href="/articles">Farmer Tips</a></li>
+      <li><a href="/market">Market Prices</a></li>
+      <li><a href="/login">Login</a></li>
+      <li><a href="/register">Register</a></li>
+    </ul>
+</nav>
+
+<div class="contact-card">
+    <h1>📞 Contact Us</h1>
+    <p class="subtitle">We are here to help you anytime</p>
+
+    <form id="contactForm">
+        <label for="name">Name</label>
+        <div class="input-group">
+            <input type="text" id="name" name="name" required placeholder="Enter your name">
+        </div>
+
+        <label for="mobile">Mobile</label>
+        <div class="input-group">
+            <input type="tel" id="mobile" name="mobile" pattern="[0-9]{10}" required placeholder="Enter 10-digit mobile number">
+        </div>
+
+        <label for="message">Message</label>
+        <div class="input-group">
+            <textarea id="message" name="message" rows="4" required placeholder="Type your message"></textarea>
+        </div>
+
+        <button type="submit">Send Message</button>
+    </form>
+
+    <div id="success"></div>
+    <div id="error"></div>
+</div>
+
+<script>
+document.getElementById("contactForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const mobile = document.getElementById("mobile").value;
+    const message = document.getElementById("message").value;
+
+    const successDiv = document.getElementById("success");
+    const errorDiv = document.getElementById("error");
+    successDiv.innerHTML = "";
+    errorDiv.innerHTML = "";
+
+    try {
+        const response = await fetch("/contact", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, mobile, message })
+        });
+
+        const data = await response.json();
+        if (data.status === "ok") {
+            successDiv.innerHTML = "✅ Message sent successfully!";
+            document.getElementById("contactForm").reset();
+        } else {
+            errorDiv.innerHTML = "❌ Failed to send message.";
+        }
+    } catch (err) {
+        errorDiv.innerHTML = "❌ Server connection failed.";
+    }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,216 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Crop Guidance - Smart Farmer Guide</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f9f9f9; }
+    header { background:#2e7d32; color:#fff; padding:15px; text-align:center; }
+    .container { max-width:800px; margin:30px auto; padding:20px; background-color: #d1c9b2; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+    select, button { padding:10px; margin:10px 0; width:100%; }
+    .crop-card { margin-top:20px; padding:20px; border:1px solid #ccc; border-radius:8px; background:#f1f8e9; }
+    .crop-card img { width:100%; max-height:200px; object-fit:cover; border-radius:8px; }
+    .guide { margin-top:20px; padding:20px; background:#e8f5e9; border-radius:8px; display:none; white-space:pre-line; }
+    .btn { background:#2e7d32; color:#fff; border:none; cursor:pointer; }
+    .btn:hover { background:#1b5e20; }
+    a { color:#2e7d32; text-decoration:none; font-weight:bold; }
+    /* NAVBAR */
+.navbar { 
+  background:#2e7d32;   /* ✅ Green background */
+  color:#fff; 
+  padding:10px; 
+  display:flex; 
+  justify-content:space-between; 
+  align-items:center; 
+}
+
+.nav-links { 
+  list-style:none; 
+  display:flex; 
+  gap:15px; 
+  margin:0; 
+  padding:0; 
+}
+
+.nav-links li a { 
+  color:#fff; 
+  text-decoration:none; 
+  font-weight:bold; 
+}
+
+
+  </style>
+</head>
+<body>
+
+<header>
+  <nav class="navbar">
+    <div>🌾 Smart Farmer Guide</div>
+    <ul class="nav-links">
+      <li><a href="/index">Home</a></li>
+      <li><a href="/articles">Farmer Tips</a></li>
+      <li><a href="/market">Market Prices</a></li>
+      <li><a href="/login">Login</a></li>
+      <li><a href="/register">Register</a></li>
+    </ul>
+</nav>
+  <h1>🌾 Crop Guidance</h1>
+  <p>Select a crop to view guidance</p>
+</header>
+
+<div class="container">
+  <label for="cropSelect">Choose Crop:</label>
+  <select id="cropSelect">
+    <option value="">-- Select --</option>
+    <option value="wheat">Wheat</option>
+    <option value="maize">Maize</option>
+    <option value="cotton">Cotton</option>
+    <option value="rice">Rice</option>
+    <option value="soybean">Soybean</option>
+    <option value="mango">Mango</option>
+    <option value="grapes">Grapes</option>
+    <option value="pomegranate">Pomegranate</option>
+    <option value="spinach">Spinach</option>
+    <option value="cabbage">Cabbage</option>
+    <option value="tomato">Tomato</option>
+  </select>
+
+  <div id="cropCard" class="crop-card" style="display:none;">
+    <img id="cropImage" src="" alt="Crop Image">
+    <h2 id="cropName"></h2>
+    <p id="cropInfo"></p>
+    <button class="btn" onclick="showGuide()">View Full Guide</button>
+  </div>
+
+  <div id="cropGuide" class="guide"></div>
+</div>
+
+<script>
+const crops = {
+  wheat: {
+    name: "Wheat",
+    info: "🌾 Major rabi crop, sowing in Nov-Dec.",
+    image: "https://cdn.britannica.com/80/157180-050-7B906E02/Heads-wheat-grains.jpg",
+    wiki: "https://en.wikipedia.org/wiki/Wheat",
+    guide: "Wheat Guide:\n- Soil: Loamy\n- Sowing: Nov-Dec\n- Harvesting: March-April\n- Fertilizer: NPK"
+  },
+
+  maize: {
+    name: "Maize",
+    info: "🌽 Kharif crop.",
+    image: "https://www.keshrinandan.com/wp-content/uploads/2015/08/ke_maize_nutrition.jpg",
+    wiki: "https://en.wikipedia.org/wiki/Maize",
+    guide: "Maize Guide:\n- Soil: Sandy loam\n- Sowing: June-July\n- Harvesting: Sept-Oct"
+  },
+
+  cotton: {
+    name: "Cotton",
+    info: "🌱 Long duration crop.",
+    image: "https://cdn.pixabay.com/photo/2018/10/20/13/38/cotton-3760800_1280.jpg",
+    wiki: "https://en.wikipedia.org/wiki/Cotton",
+    guide: "Cotton Guide:\n- Soil: Black soil\n- Pest: Bollworm"
+    
+  },
+
+  rice: {
+    name: "Rice",
+    info: "🍚 Major kharif crop.",
+    image: "https://sustainablerice.org/wp-content/uploads/2022/11/shutterstock_1415318663-scaled.jpeg",
+    wiki: "https://en.wikipedia.org/wiki/Rice",
+    guide: "Rice Guide:\n- Soil: Clayey\n- Water: Standing water"
+  },
+
+  soybean: {
+    name: "Soybean",
+    info: "🥜 Kharif crop.",
+    image: "https://img.freepik.com/premium-photo/close-up-soybean-plant-cultivated-agricultural-field-agriculture-crop-protection_255667-33741.jpg?w=2000",
+    wiki: "https://en.wikipedia.org/wiki/Soybean",
+    guide: "Soybean Guide:\n- Sowing: June\n- Harvesting: Sept-Oct"
+  },
+
+  mango: {
+    name: "Mango",
+    info: "🥭 Summer fruit.",
+    image: "https://tse2.mm.bing.net/th/id/OIP.HYWxGq-7Id7exMu6WXaRwQHaE8?cb=defcachec2&rs=1&pid=ImgDetMain&o=7&rm=3",
+    wiki: "https://en.wikipedia.org/wiki/Mango",
+    guide: "Mango Guide:\n- Harvesting: May-June"
+  },
+
+  grapes: {
+    name: "Grapes",
+    info: "🍇 Fruit crop.",
+    image: "https://tse3.mm.bing.net/th/id/OIP.g8_52cuLYb7uS-zR1uY90AHaFj?cb=defcachec2&rs=1&pid=ImgDetMain&o=7&rm=3",
+    wiki: "https://en.wikipedia.org/wiki/Grape",
+    guide: "Grapes Guide:\n- Uses: Wine, raisins"
+  },
+
+  pomegranate: {
+    name: "Pomegranate",
+    info: "🍎 Hardy fruit.",
+    image: "https://www.homefortheharvest.com/wp-content/uploads/2022/10/pomegranate-tree.jpg",
+    wiki: "https://en.wikipedia.org/wiki/Pomegranate",
+    guide: "Pomegranate Guide:\n- Drought tolerant"
+  },
+
+  spinach: {
+    name: "Spinach",
+    info: "🥬 Leafy vegetable.",
+    image: "https://bonnieplants.com/cdn/shop/articles/BONNIE-PLANTS_spinach_iStock-915250154-1800px_87cee462-3671-4697-98ef-3007d29145e9.jpg?v=1642541976&width=1000",
+    wiki: "https://en.wikipedia.org/wiki/Spinach",
+    guide: "Spinach Guide:\n- Harvesting: 30-40 days"
+  },
+
+  cabbage: {
+    name: "Cabbage",
+    info: "🥬 Cool season vegetable.",
+    image: "https://cdn.pixabay.com/photo/2018/10/03/22/08/kohl-3722517_1280.jpg",
+    wiki: "https://en.wikipedia.org/wiki/Cabbage",
+    guide: "Cabbage Guide:\n- Soil: Sandy loam\n- Harvesting: 90-120 days"
+  },
+
+  tomato: {
+    name: "Tomato",
+    info: "🍅 Popular vegetable.",
+    image: "https://tse4.mm.bing.net/th/id/OIP.3I6FbcMMyJ32MzvnK9051QHaE8?cb=defcachec2&rs=1&pid=ImgDetMain&o=7&rm=3",
+    wiki: "https://en.wikipedia.org/wiki/Tomato",
+    guide: "Tomato Guide:\n- Harvesting: 60-80 days"
+  }
+};
+
+const cropSelect = document.getElementById("cropSelect");
+const cropCard = document.getElementById("cropCard");
+const cropImage = document.getElementById("cropImage");
+const cropName = document.getElementById("cropName");
+const cropInfo = document.getElementById("cropInfo");
+const cropGuide = document.getElementById("cropGuide");
+
+cropSelect.addEventListener("change", () => {
+  const selected = cropSelect.value;
+  if (crops[selected]) {
+    cropCard.style.display = "block";
+    cropImage.src = crops[selected].image;
+    cropName.textContent = crops[selected].name;
+    cropInfo.textContent = crops[selected].info;
+    cropGuide.style.display = "none";
+  } else {
+    cropCard.style.display = "none";
+    cropGuide.style.display = "none";
+  }
+});
+
+function showGuide() {
+  const selected = cropSelect.value;
+  if (crops[selected]) {
+    cropGuide.style.display = "block";
+    cropGuide.innerHTML =
+      crops[selected].guide +
+      "<br><br>🔗 <a href='" + crops[selected].wiki + "' target='_blank'>Read more on Wikipedia</a>";
+  }
+}
+</script>
+
+</body>
+</html>

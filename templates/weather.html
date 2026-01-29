@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Weather</title>
+
+<style>
+/* ===== GLOBAL ===== */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f4f7f4;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #2e7d32;
+  color: white;
+  padding: 10px 20px;
+}
+
+.navbar div {
+  font-size: 20px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* ===== WEATHER BOX ===== */
+.box {
+  max-width: 700px;
+  
+  margin: 50px auto;
+  background:#d1c9b2;;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(106, 102, 102, 0.1);
+  color: rgb(71, 69, 69);
+  text-align: center;
+}
+
+button {
+  background: #287f53;
+  color: #ffffff;
+  border: none;
+  padding: 8px 15px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+select {
+  padding: 5px;
+  margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div>🌾 Smart Farmer Guide</div>
+  <ul class="nav-links">
+    <li><a href="/index">Home</a></li>
+    <li><a href="/articles">Farmer Tips</a></li>
+    <li><a href="/market">Market Prices</a></li>
+    <li><a href="/login">Login</a></li>
+    <li><a href="/register">Register</a></li>
+  </ul>
+</nav>
+
+<!-- WEATHER BOX -->
+<div class="box">
+  <h2>🌦 Weather Information</h2>
+
+  <select id="city">
+  <option value="">-- Select District --</option>
+  <option value="Ahmednagar">Ahmednagar</option>
+  <option value="Akola">Akola</option>
+  <option value="Amravati">Amravati</option>
+  <option value="Aurangabad">Aurangabad</option>
+  <option value="Beed">Beed</option>
+  <option value="Bhandara">Bhandara</option>
+  <option value="Buldhana">Buldhana</option>
+  <option value="Chandrapur">Chandrapur</option>
+  <option value="Dhule">Dhule</option>
+  <option value="Gadchiroli">Gadchiroli</option>
+  <option value="Gondia">Gondia</option>
+  <option value="Hingoli">Hingoli</option>
+  <option value="Jalgaon">Jalgaon</option>
+  <option value="Jalna">Jalna</option>
+  <option value="Kolhapur">Kolhapur</option>
+  <option value="Latur">Latur</option>
+  <option value="Mumbai City">Mumbai City</option>
+  <option value="Mumbai Suburban">Mumbai Suburban</option>
+  <option value="Nagpur">Nagpur</option>
+  <option value="Nanded">Nanded</option>
+  <option value="Nandurbar">Nandurbar</option>
+  <option value="Nashik">Nashik</option>
+  <option value="Osmanabad">Osmanabad</option>
+  <option value="Palghar">Palghar</option>
+  <option value="Parbhani">Parbhani</option>
+  <option value="Pune">Pune</option>
+  <option value="Raigad">Raigad</option>
+  <option value="Ratnagiri">Ratnagiri</option>
+  <option value="Sangli">Sangli</option>
+  <option value="Satara">Satara</option>
+  <option value="Sindhudurg">Sindhudurg</option>
+  <option value="Solapur">Solapur</option>
+  <option value="Thane">Thane</option>
+  <option value="Wardha">Wardha</option>
+  <option value="Washim">Washim</option>
+  <option value="Yavatmal">Yavatmal</option>
+</select>
+
+
+  <br>
+  <button onclick="getWeather()">Check</button>
+
+  <hr>
+
+  <div id="result"></div>
+</div>
+
+<script>
+function getWeather() {
+  let city = document.getElementById("city").value;
+  let result = document.getElementById("result");
+
+  if (city === "") {
+    result.innerHTML = "<p style='color:red'>Please select city</p>";
+    return;
+  }
+
+  fetch(`/weather?city=${city}`)
+    .then(res => res.json())
+    .then(data => {
+      if (!data.city) {
+        result.innerHTML = "<p>No data available</p>";
+        return;
+      }
+
+      result.innerHTML = `
+        <h3>${data.city}</h3>
+        <p>🌡 Temperature: ${data.temperature} °C</p>
+        <p>💧 Humidity: ${data.humidity}%</p>
+        <p>☁ Condition: ${data.condition}</p>
+        <p>🌧 Rain: ${data.rain} mm</p>
+      `;
+    });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pest & Disease Control - Smart Farmer Guide</title>
+
+<style>
+body { font-family: Arial, sans-serif; margin:0; background:#f4f7f4; }
+header { background:#c62828; color:#fff; padding:15px; text-align:center; }
+
+/* NAVBAR */
+.navbar { 
+  background:#c62828;   /* 🔴 Red color */
+  color:#fff; 
+  padding:10px; 
+  display:flex; 
+  justify-content:space-between; 
+  align-items:center; 
+}
+.nav-links { 
+  list-style:none; 
+  display:flex; 
+  gap:15px; 
+}
+.nav-links li a { 
+  color:#fff; 
+  text-decoration:none; 
+  font-weight:bold; 
+}
+
+
+.container {
+  max-width:1000px;
+  margin:30px auto;
+  padding:20px;
+  background-color:#d1c9b2;;
+  border-radius:8px;
+}
+
+select { padding:10px; width:100%; margin-bottom:20px; }
+
+.card {
+  display:none;
+  background:#fff3e0;
+  padding:20px;
+  margin-bottom:20px;
+  border-radius:8px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+  transition:0.3s;
+}
+.card:hover { box-shadow:0 4px 10px rgba(0,0,0,0.2); }
+
+.card img {
+  width:100%;
+  max-height:250px;
+  object-fit:cover;
+  border-radius:8px;
+}
+
+h3 { color:#b71c1c; }
+
+.btn {
+  background:#c62828;
+  color:white;
+  border:none;
+  padding:10px;
+  margin-top:10px;
+  cursor:pointer;
+  border-radius:5px;
+}
+.btn:hover { background:#8e0000; }
+
+.details {
+  display:none;
+  margin-top:10px;
+  background:#ffebee;
+  padding:15px;
+  border-radius:5px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <nav class="navbar">
+    <div>🌾 Smart Farmer Guide</div>
+    <ul class="nav-links">
+      <li><a href="/index">Home</a></li>
+      <li><a href="/articles">Farmer Tips</a></li>
+      <li><a href="/market">Market Prices</a></li>
+      <li><a href="/login">Login</a></li>
+      <li><a href="/register">Register</a></li>
+    </ul>
+  </nav>
+  <h1>🐛 Pest & Disease Control</h1>
+  <p>Select Crop to View Common Pests</p>
+</header>
+
+<div class="container">
+
+<select id="cropSelect">
+<option value="">-- Select Crop --</option>
+<option value="wheat">Wheat</option>
+<option value="rice">Rice</option>
+<option value="cotton">Cotton</option>
+<option value="tomato">Tomato</option>
+</select>
+
+<!-- WHEAT -->
+<div class="card" id="wheat">
+<img src="https://cdn.britannica.com/63/144363-050-6E691B61/aphids-eggs.jpg" alt="Aphids on Wheat">
+<h3>🦟 Aphids (Wheat)</h3>
+<button class="btn" onclick="toggle('wheatDetails', this)">View Details</button>
+
+<div class="details" id="wheatDetails">
+<b>Symptoms:</b> Yellowing leaves, stunted growth<br><br>
+<b>Prevention:</b> Early sowing, resistant varieties<br><br>
+<b>Solution:</b> Neem oil spray or Imidacloprid<br><br>
+
+<hr>
+<b>Extra Information:</b><br>
+• Scientific Name: <i>Aphidoidea</i><br>
+• Damage: Suck plant sap, reduce yield<br>
+• Active Season: Winter & early summer<br><br>
+
+<a href="https://en.wikipedia.org/wiki/Aphid" target="_blank">
+<button class="btn">📘 View on Wikipedia</button>
+</a>
+</div>
+</div>
+
+<!-- RICE -->
+<div class="card" id="rice">
+<img src="https://media.sciencephoto.com/image/c0273150/800wm/C0273150-Small_brown_planthopper.jpg" alt="Brown Plant Hopper on Rice">
+<h3>🐞 Brown Plant Hopper (Rice)</h3>
+<button class="btn" onclick="toggle('riceDetails', this)">View Details</button>
+
+<div class="details" id="riceDetails">
+<b>Symptoms:</b> Hopper burn, drying plants<br><br>
+<b>Prevention:</b> Avoid excess nitrogen<br><br>
+<b>Solution:</b> Chlorpyrifos or Neem pesticide<br><br>
+
+<hr>
+<b>Extra Information:</b><br>
+• Scientific Name: <i>Nilaparvata lugens</i><br>
+• Damage: Weakens rice stems<br>
+• Active Season: Monsoon<br><br>
+
+<a href="https://en.wikipedia.org/wiki/Brown_planthopper" target="_blank">
+<button class="btn">📘 View on Wikipedia</button>
+</a>
+</div>
+</div>
+
+<!-- COTTON -->
+<div class="card" id="cotton">
+<img src="https://earthwiseagriculture.net/wp-content/uploads/2017/12/1235168-Corn-Earworm.jpg" alt="Bollworm on Cotton">
+<h3>🐛 Bollworm (Cotton)</h3>
+<button class="btn" onclick="toggle('cottonDetails', this)">View Details</button>
+
+<div class="details" id="cottonDetails">
+<b>Symptoms:</b> Damaged bolls, holes in cotton<br><br>
+<b>Prevention:</b> Pheromone traps, crop rotation<br><br>
+<b>Solution:</b> Spinosad / Bt spray<br><br>
+
+<hr>
+<b>Extra Information:</b><br>
+• Scientific Name: <i>Helicoverpa armigera</i><br>
+• Damage: Reduces cotton quality<br>
+• Active Season: Summer<br><br>
+
+<a href="https://en.wikipedia.org/wiki/Helicoverpa_armigera" target="_blank">
+<button class="btn">📘 View on Wikipedia</button>
+</a>
+</div>
+</div>
+
+<!-- TOMATO -->
+<div class="card" id="tomato">
+<img src="https://gardenerspath.com/wp-content/uploads/2021/06/Macro-Photo-of-Horse-Chestnut-Leaf-Miner-Cameraria-ohridella.jpg" alt="Leaf Miner on Tomato">
+<h3>🐜 Leaf Miner (Tomato)</h3>
+<button class="btn" onclick="toggle('tomatoDetails', this)">View Details</button>
+
+<div class="details" id="tomatoDetails">
+<b>Symptoms:</b> White zigzag lines on leaves<br><br>
+<b>Prevention:</b> Yellow sticky traps<br><br>
+<b>Solution:</b> Neem oil or Spinosad<br><br>
+
+<hr>
+<b>Extra Information:</b><br>
+• Scientific Name: <i>Liriomyza</i><br>
+• Damage: Reduces photosynthesis<br>
+• Active Season: Warm climate<br><br>
+
+<a href="https://en.wikipedia.org/wiki/Leaf_miner" target="_blank">
+<button class="btn">📘 View on Wikipedia</button>
+</a>
+</div>
+</div>
+
+</div>
+
+<script>
+const cards = document.querySelectorAll(".card");
+
+document.getElementById("cropSelect").addEventListener("change", function () {
+  cards.forEach(card => card.style.display = "none");
+  if (this.value) {
+    document.getElementById(this.value).style.display = "block";
+  }
+});
+
+function toggle(id, btn) {
+  const el = document.getElementById(id);
+  if (el.style.display === "block") {
+    el.style.display = "none";
+    btn.innerText = "View Details";
+  } else {
+    el.style.display = "block";
+    btn.innerText = "Hide Details";
+  }
+}
+</script>
+
+</body>
+</html>

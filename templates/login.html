@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Farmer Login</title>
+<style>
+body{
+  font-family:Arial;
+  background:#f4f7f4;
+}
+.box{
+  width:550px;
+  margin:100px auto;
+  background:#fff;
+  padding:20px;
+  border-radius:8px;
+}
+input,button{
+  width:94%;
+  padding:10px;
+  margin-top:10px;
+}
+button{
+  background:#287f53;
+  color:white;
+  border:none;
+  cursor:pointer;
+}
+a{
+  color:#2e7d32;
+  text-decoration:none;
+  font-weight:bold;
+}
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2e7d32;
+  padding: 15px 0;
+}
+
+.headline h1 {
+  color: white;
+  margin: 0;
+  font-size: 28px;
+}
+
+
+</style>
+</head>
+
+<body>
+<nav class="navbar">
+<div class="headline">
+  <h1>🌾 <b>Smart Farming Guidance</b></h1>
+</div>
+</nav>
+<div class="box">
+<h2>🔐 Farmer Login</h2>
+
+<form action="/login" method="post">
+  <input type="text" name="mobile" placeholder="Mobile Number" required>
+  <input type="password" name="password" placeholder="Enter Password" required>
+  <button type="submit">Login</button>
+</form>
+
+<p>
+  New Farmer?
+  <a href="/register">Register</a>
+</p>
+</div>
+
+</body>
+</html>

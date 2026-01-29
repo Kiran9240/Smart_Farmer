@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Smart Farmer Guide</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+<style>
+body { font-family: Arial, sans-serif; margin:0; }
+
+/* ===== HEADER ===== */
+header { background:#2e7d32; color:#fff; padding:12px; }
+.navbar { display:flex; justify-content:space-between; align-items:center; }
+.nav-left { display:flex; align-items:center; gap:10px; font-weight:bold; }
+.nav-links { list-style:none; display:flex; gap:20px; margin:0; padding:0; }
+.nav-links a { color:#fff; text-decoration:none; font-weight:bold; }
+
+/* ===== SLIDESHOW ===== */
+.slideshow {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  overflow: hidden;
+}
+.slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 2.5s ease-in-out;
+}
+.slide.active {
+  opacity: 1;
+}
+
+/* ===== HERO TEXT ===== */
+.hero-text {
+  text-align:center;
+  margin:30px 0;
+}
+.hero-text p { color:#555; }
+
+/* ===== BUTTON ===== */
+button {
+  background:#2e7d32;
+  color:#fff;
+  border:none;
+  padding:12px 18px;
+  border-radius:5px;
+  cursor:pointer;
+  margin:5px;
+}
+button:hover { background:#1b5e20; }
+
+/* ===== SECTIONS ===== */
+section { padding:30px; text-align:center; background:#f9f9f9; }
+
+/* ===== CARDS ===== */
+.cards, .crop-cards {
+  display:flex;
+  gap:20px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+.card, .crop-card {
+  background:#e8f5e9;
+  padding:25px;
+  border-radius:8px;
+  width:200px;
+  text-align:center;
+  cursor:pointer;
+  transition:0.3s;
+}
+.card:hover, .crop-card:hover {
+  transform:scale(1.05);
+  background:#dcedc8;
+}
+.crop-card img {
+  width:100%;
+  height:120px;
+  object-fit:cover;
+  border-radius:6px;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background:#2e7d32;
+  color:#fff;
+  text-align:center;
+  padding:10px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<header>
+  <nav class="navbar">
+    <div class="nav-left">🌾 Smart Farmer Guide</div>
+    <ul class="nav-links">
+      <li><a href="/articles">Farmer Tips</a></li>
+      <li><a href="/market">Market</a></li>
+      <li><a href="/login">Login</a></li>
+      <li><a href="/register">Register</a></li>
+      <li><a href="/contact-page">Help Center</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- ===== SLIDESHOW ===== -->
+<div class="slideshow">
+  <img src="https://www.indamseeds.com/assets/images/blogs-indams/blog-34-1.jpg" class="slide active">
+  <img src="https://as1.ftcdn.net/v2/jpg/05/31/69/50/1000_F_531695039_bdZMO9u1g6Gicg4wWhpjpfMh0Xd5RGio.jpg" class="slide">
+  <img src="https://img.freepik.com/premium-photo/indian-farmer-using-smart-phone-green-cotton-crop_621325-1503.jpg?w=2000" class="slide">
+</div>
+
+<!-- ===== HERO ===== -->
+<div class="hero-text">
+  <h1>Smart Farming Guidance</h1>
+  <p>Crop • Crop Calendar • Farming Videos • Weather • Schemes</p>
+
+  <button onclick="location.href='/crop'">🌱 Crop Guide</button>
+  <button onclick="location.href='/crop-calendar'">📅 Crops Calendar</button>
+  <button onclick="location.href='/crop_videos'">🎥 Farming Videos</button>
+  <button onclick="location.href='/weather-page'">🌦️ Weather</button>
+  <button onclick="location.href='/schemes'">🏛️ Govt Schemes</button>
+</div>
+
+<!-- ===== SERVICES ===== -->
+<section>
+<h2>Our Services</h2>
+<div class="cards">
+  <div class="card" onclick="location.href='/crop'">🌾 Crop Guidance</div>
+  <div class="card" onclick="location.href='/weather-page'">🌦️ Weather</div>
+  <div class="card" onclick="location.href='/market'">💰 Market Prices</div>
+  <div class="card" onclick="location.href='/pest'">🐛 Pest Control</div>
+</div>
+</section>
+
+<!-- ===== CROPS ===== -->
+<section>
+<h2>Major Crops</h2>
+<div class="crop-cards">
+  <div class="crop-card">
+    <img src="https://cdn.britannica.com/80/157180-050-7B906E02/Heads-wheat-grains.jpg">
+    <h3>Wheat</h3>
+    <button onclick="location.href='/crop'">View Guide</button>
+  </div>
+  <div class="crop-card">
+    <img src="https://www.keshrinandan.com/wp-content/uploads/2015/08/ke_maize_nutrition.jpg">
+    <h3>Maize</h3>
+    <button onclick="location.href='/crop'">View Guide</button>
+  </div>
+  <div class="crop-card">
+    <img src="https://sustainablerice.org/wp-content/uploads/2022/11/shutterstock_1415318663-scaled.jpeg">
+    <h3>Rice</h3>
+    <button onclick="location.href='/crop'">View Guide</button>
+  </div>
+  <div class="crop-card">
+    <img src="https://cdn.pixabay.com/photo/2018/10/20/13/38/cotton-3760800_1280.jpg">
+    <h3>Cotton</h3>
+    <button onclick="location.href='/crop'">View Guide</button>
+  </div>
+</div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section>
+<h2>Register for Alerts</h2>
+<button onclick="location.href='/register'">Register</button>
+<button onclick="location.href='/login'">Login</button>
+<button onclick="location.href='/contact-page'">Help Center</button>
+</section>
+
+<footer>
+<p>© 2026 Smart Farmer Guide</p>
+</footer>
+
+<!-- ===== SLIDESHOW JS ===== -->
+<script>
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+setInterval(() => {
+  slides.forEach(s => s.classList.remove("active"));
+  index = (index + 1) % slides.length;
+  slides[index].classList.add("active");
+}, 5000); // smooth change every 8 seconds
+</script>
+
+</body>
+</html>

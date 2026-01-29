@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Market Prices</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f9f9f9; }
+        h1 { color: #2c3e50; }
+        select, button { padding: 8px; margin: 5px; }
+        table { border-collapse: collapse; margin-top: 20px; width: 70%; }
+        th, td { border: 1px solid #ccc; padding: 20px; text-align: center; }
+        th { background: #3498db; color: #fff; }
+        #error { color: red; margin-top: 15px; }
+
+        /* NAVBAR */
+        header { background:#2e7d32; color:#fff; padding:12px; }
+.navbar { color: #f7f6f6;background:#2e7d32;padding: 10px;display:flex; justify-content:space-between; align-items:center; }
+.nav-left { display:flex; align-items:center; gap:20px; color:#f7f6f6 }
+.nav-links { list-style:none; display:flex; gap:20px; margin:0; padding:0; }
+.nav-links a { color:#fff; text-decoration:none; font-weight:bold; }
+
+        
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+      <div>🌾 Smart Farmer Guide</div>
+      <ul class="nav-links">
+        <li><a href="/index">Home</a></li>
+        <li><a href="/articles">Farmer Tips</a></li>
+        <li><a href="/login">Login</a></li>
+        <li><a href="/register">Register</a></li>
+      </ul>
+    </nav>
+
+    <h1>📊 Market Prices</h1>
+
+    <label for="crop">Select Crop:</label>
+    <select id="crop">
+        <option value="">-- Select --</option>
+        <option value="Wheat">Wheat</option>
+        <option value="Maize">Maize</option>
+        <option value="Cotton">Cotton</option>
+        <option value="Rice">Rice</option>
+        <option value="Soybean">Soybean</option>
+        <option value="Tomato">Tomato</option>
+    </select>
+
+    <label for="market">Select Market:</label>
+    <select id="market">
+        <option value="">-- Select --</option>
+        <option value="Sangli">Sangli</option>
+        <option value="Kolhapur">Kolhapur</option>
+        <option value="Pune">Pune</option>
+        <option value="Nashik">Nashik</option>
+        <option value="Nagpur">Nagpur</option>
+        <option value="Satara">Satara</option>
+        <option value="Solapur">Solapur</option>
+        <option value="Ratnagiri">Ratnagiri</option>
+        <option value="Sindhudurg">Sindhudurg</option>
+    </select>
+
+    <button onclick="getPrices()">Get Prices</button>
+
+    <div id="error"></div>
+
+    <table id="priceTable" style="display:none;">
+        <thead>
+            <tr>
+                <th>Crop</th>
+                <th>Market</th>
+                <th>Min Price (₹)</th>
+                <th>Max Price (₹)</th>
+            </tr>
+        </thead>
+        <tbody id="priceBody"></tbody>
+    </table>
+
+    <script>
+        async function getPrices() {
+            const crop = document.getElementById("crop").value;
+            const market = document.getElementById("market").value;
+            const errorDiv = document.getElementById("error");
+
+            errorDiv.innerHTML = ""; // clear old errors
+
+            if (!crop || !market) {
+                errorDiv.innerHTML = "⚠️ Please select both crop and market";
+                return;
+            }
+
+            try {
+                // ✅ Relative path for production
+                const response = await fetch(`/prices?crop=${crop}&market=${market}`);
+                if (!response.ok) {
+                    throw new Error("Server returned " + response.status);
+                }
+                const data = await response.json();
+
+                if (!data.min_price || !data.max_price || data.min_price === "Not found") {
+                    errorDiv.innerHTML = "❌ Prices not found for this crop/market";
+                    document.getElementById("priceTable").style.display = "none";
+                    return;
+                }
+
+                const table = document.getElementById("priceTable");
+                const body = document.getElementById("priceBody");
+                body.innerHTML = `
+                    <tr>
+                        <td>${data.crop}</td>
+                        <td>${data.market}</td>
+                        <td>${data.min_price}</td>
+                        <td>${data.max_price}</td>
+                    </tr>
+                `;
+                table.style.display = "table";
+            } catch (err) {
+                console.error("Fetch error:", err);
+                errorDiv.innerHTML = "❌ Could not connect to server. Make sure Flask is running.";
+                document.getElementById("priceTable").style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

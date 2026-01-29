@@ -1,1 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Farmer Tips & Articles</title>
 
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f4f7f4;
+}
+
+/* HEADER + NAVBAR */
+header {
+  background: #2e7d32;
+  color: #fff;
+  padding: 15px;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-links li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+header h1 {
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* CONTENT */
+.container {
+  max-width: 1100px;
+  margin: 30px auto;
+  padding: 20px;
+  
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  
+}
+
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  background-color:#d1c9b2;;
+}
+
+.card h3 {
+  color: #2e7d32;
+}
+
+.card p {
+  color: #555;
+  font-size: 14px;
+}
+
+.read-btn {
+  margin-top: 10px;
+  padding: 8px 15px;
+  background: #2e7d32;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.read-btn:hover {
+  background: #1b5e20;
+}
+
+/* EXTRA INFO */
+.extra {
+  display: none;
+  margin-top: 15px;
+}
+
+.extra img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.related {
+  background: #f1f8f3;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <nav class="navbar">
+    <div>🌾 Smart Farmer Guide</div>
+    <ul class="nav-links">
+      <li><a href="/index">Home</a></li>
+      <li><a href="/market">Market Prices</a></li>
+      <li><a href="/login">Login</a></li>
+      <li><a href="/register">Register</a></li>
+    </ul>
+  </nav>
+  <h1>🌾 Farmer Tips & Articles</h1>
+</header>
+
+<div class="container">
+<div class="cards">
+
+<!-- CARD 1 -->
+<div class="card">
+  <h3>Soil Health Improvement</h3>
+  <p>Learn how to improve soil fertility using organic and modern techniques.</p>
+  <button class="read-btn" onclick="toggleArticle(1, this)">Read More →</button>
+
+  <div class="extra" id="extra1">
+    <img src="https://www.ces.ncsu.edu/wp-content/uploads/2023/09/Soil-Health-Principles-768x768.png">
+    <p>
+      Healthy soil increases crop yield. Use compost, crop rotation,
+      green manure and soil testing regularly.
+    </p>
+    <div class="related">
+      <b>Related Tips:</b>
+      <ul>
+        <li>Organic Fertilizers</li>
+        <li>Crop Rotation</li>
+        <li>Soil Testing</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- CARD 2 -->
+<div class="card">
+  <h3>Water Management in Farming</h3>
+  <p>Effective irrigation methods to save water and increase yield.</p>
+  <button class="read-btn" onclick="toggleArticle(2, this)">Read More →</button>
+
+  <div class="extra" id="extra2">
+    <img src="https://tse2.mm.bing.net/th/id/OIP.svgiauCq04IfaGFLK4vAoQHaEc">
+    <p>
+      Drip irrigation and rainwater harvesting help conserve water
+      and improve productivity.
+    </p>
+    <div class="related">
+      <b>Related Tips:</b>
+      <ul>
+        <li>Drip Irrigation</li>
+        <li>Rainwater Harvesting</li>
+        <li>Mulching</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- CARD 3 -->
+<div class="card">
+  <h3>Crop Disease Prevention</h3>
+  <p>Identify early signs of crop diseases and prevent losses.</p>
+  <button class="read-btn" onclick="toggleArticle(3, this)">Read More →</button>
+
+  <div class="extra" id="extra3">
+    <img src="https://cdn.slidesharecdn.com/ss_thumbnails/cropprotection-240122181158-351eda0b-thumbnail.jpg">
+    <p>
+      Use disease-resistant seeds, proper spacing, and timely spraying
+      to prevent crop diseases.
+    </p>
+    <div class="related">
+      <b>Related Tips:</b>
+      <ul>
+        <li>Pest Control</li>
+        <li>Seed Treatment</li>
+        <li>Organic Sprays</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- CARD 4 -->
+<div class="card">
+  <h3>Weed Control at Early Stage</h3>
+  <p>Remove weeds in first 20–30 days.</p>
+  <button class="read-btn" onclick="toggleArticle(4, this)">Read More →</button>
+
+  <div class="extra" id="extra4">
+    <img src="https://framerusercontent.com/images/sBb8LjBzfiEwr05VixN3qRsoZc4.webp">
+    <p>
+      🌿 Weeds reduce yield up to 30%
+    </p>
+    <div class="related">
+      <b>Related Tips:</b>
+      <ul>
+        <li>Hand weeding</li>
+        <li>Mulching</li>
+        <li>Recommended herbicides</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- CARD 5 -->
+<div class="card">
+  <h3>Balanced Fertilizer Use</h3>
+  <p>Avoid using only urea.</p>
+  <button class="read-btn" onclick="toggleArticle(5, this)">Read More →</button>
+
+  <div class="extra" id="extra5">
+    <img src="https://plantcaretoday.com/wp-content/uploads/apply-fertilizer-05312016.jpg">
+    <p>
+      Benefit: Healthy crop growth & lower cost
+    </p>
+    <div class="related">
+      <b>Related Tips:</b>
+      <ul>
+        <li>Use NPK in balanced quantity</li>
+        <li>Add organic manure</li>
+        <li>Follow soil test recommendations</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- CARD 6 -->
+<div class="card">
+  <h3>Modern Farming Techniques</h3>
+  <p>Use technology for smart farming.</p>
+  <button class="read-btn" onclick="toggleArticle(6, this)">Read More →</button>
+
+  <div class="extra" id="extra6">
+    <img src="https://b2949656.smushcdn.com/2949656/wp-content/uploads/2023/02/modern-agricultural-technology-adoption-and-its-importance.jpg?lossy=2&strip=1&webp=1">
+    <p>
+      Benefit: More income with less effort
+    </p>
+    <div class="related">
+      <b>Related Tips:</b>
+      <ul>
+        <li>Mobile agriculture apps</li>
+        <li>Soil testing kits</li>
+        <li>Improved machinery</li>
+        <li>Precision farming</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+</div>
+</div>
+
+<script>
+function toggleArticle(id, btn) {
+
+  // Close all articles
+  document.querySelectorAll(".extra").forEach(div => {
+    div.style.display = "none";
+  });
+
+  // Reset all buttons
+  document.querySelectorAll(".read-btn").forEach(b => {
+    b.innerText = "Read More →";
+  });
+
+  const selected = document.getElementById("extra" + id);
+
+  // Open selected
+  if (selected.style.display !== "block") {
+    selected.style.display = "block";
+    btn.innerText = "Read Less ↑";
+  }
+}
+</script>
+
+</body>
+</html>
