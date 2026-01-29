@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, request, jsonify, render_template, redirect, url_for
 import mysql.connector
 from db import get_db_connection
 
@@ -80,38 +80,41 @@ def get_prices():
 def pest():
     return render_template("Pest & Disease.html")
 
-# ---------------- Register ----------------
+# ---------------- Register (JSON) ----------------
 @app.route('/register', methods=["GET", "POST"])
 def register():
-    if request.method == "POST":
-        name = request.form.get("name")
-        mobile = request.form.get("mobile")
-        password = request.form.get("password")
+    if request.method == "GET":
+        return render_template("register.html")
+    try:
+        data = request.get_json()
+        name = data.get("name")
+        mobile = data.get("mobile")
+        password = data.get("password")
 
-        try:
-            conn = get_db_connection()
-            cur = conn.cursor()
-            cur.execute("""
-                INSERT INTO users (name, mobile, password, verified, role)
-                VALUES (%s, %s, %s, %s, %s)
-            """, (name, mobile, password, False, "farmer"))
-        except mysql.connector.Error as e:
-            print("Database error:", e)
-            return render_template("register.html", error="Error registering user")
-        finally:
-            cur.close()
-            conn.close()
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("""
+            INSERT INTO users (name, mobile, password, verified, role)
+            VALUES (%s, %s, %s, %s, %s)
+        """, (name, mobile, password, False, "farmer"))
+        conn.commit()
+        cur.close()
+        conn.close()
 
-        return redirect(url_for("login"))
+        return jsonify({"message": "Registration successful"}), 200
+    except mysql.connector.Error as e:
+        print("Database error:", e)
+        return jsonify({"message": "Error registering user"}), 500
 
-    return render_template("register.html")
-
-# ---------------- Login ----------------
+# ---------------- Login (JSON) ----------------
 @app.route('/login', methods=["GET", "POST"])
 def login():
-    if request.method == "POST":
-        mobile = request.form.get("mobile")
-        password = request.form.get("password")
+    if request.method == "GET":
+        return render_template("login.html")
+    try:
+        data = request.get_json()
+        mobile = data.get("mobile")
+        password = data.get("password")
 
         conn = get_db_connection()
         cur = conn.cursor(dictionary=True)
@@ -121,11 +124,12 @@ def login():
         conn.close()
 
         if user:
-            return render_template("index.html", user=user)
+            return jsonify({"message": "Login successful", "user": user}), 200
         else:
-            return render_template("login.html", error="Invalid mobile or password")
-
-    return render_template("login.html")
+            return jsonify({"message": "Invalid mobile or password"}), 401
+    except mysql.connector.Error as e:
+        print("Login error:", e)
+        return jsonify({"message": "Server error during login"}), 500
 
 # ---------------- Contact API ----------------
 @app.route('/contact', methods=["POST"])
@@ -138,14 +142,13 @@ def contact():
             INSERT INTO contacts (name, mobile, message)
             VALUES (%s, %s, %s)
         """, (data.get("name"), data.get("mobile"), data.get("message")))
+        conn.commit()
+        cur.close()
+        conn.close()
+        return jsonify({"status": "ok"})
     except mysql.connector.Error as e:
         print("Error:", e)
         return jsonify({"status": "error"})
-    finally:
-        cur.close()
-        conn.close()
-
-    return jsonify({"status": "ok"})
 
 # ---------------- Contact Page ----------------
 @app.route('/contact-page')
@@ -163,7 +166,6 @@ def weather():
     city = request.args.get("city")
     if not city:
         return jsonify({})
-
     conn = get_db_connection()
     cur = conn.cursor(dictionary=True)
     cur.execute("""
@@ -180,7 +182,7 @@ def weather():
 
 # ---------------- Crop Calendar ----------------
 @app.route('/crop-calendar')
-def crop__calendar():
+def crop_calendar():
     return render_template("crop_calendar.html")
 
 @app.route("/get_crop_data", methods=["GET"])
@@ -188,7 +190,6 @@ def get_crop_data():
     crop_name = request.args.get("crop")
     if not crop_name:
         return jsonify([])
-
     conn = get_db_connection()
     cur = conn.cursor(dictionary=True)
     cur.execute("""
@@ -218,14 +219,13 @@ def videos():
     video_list = []
     for v in videos:
         video_list.append({
-    "id": v["id"],
-    "crop_type": v["crop_type"],
-    "stage": v["stage"],
-    "title": v["title"],
-    "description": v["description"],
-    "video_url": v["video_url"],
-    "thumbnail": v["thumbnail"]   # ✅ हे add कर
-
+            "id": v["id"],
+            "crop_type": v["crop_type"],
+            "stage": v["stage"],
+            "title": v["title"],
+            "description": v["description"],
+            "video_url": v["video_url"],
+            "thumbnail": v["thumbnail"]
         })
     return jsonify(video_list)
 
