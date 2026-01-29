@@ -1,105 +1,59 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Smart Farmer Registration</title>
+<title>Farmer Registration</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
-body {
-  margin:0; font-family:'Roboto', sans-serif; background:#f0f4f8; display:flex; flex-direction:column; min-height:100vh;
-}
-
-/* ===== HEADER ===== */
-header {
-  background:#2e7d32; color:#fff; padding:15px 30px; text-align:center;
-  box-shadow:0 4px 6px rgba(0,0,0,0.1);
-}
-header h1 { margin:0; font-size:1.8em; }
-
-/* ===== REGISTER BOX ===== */
-.register-box {
-  background:#fff; max-width:450px; width:90%; margin:60px auto; padding:30px; border-radius:12px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.1); text-align:center;
-}
-.register-box h2 { margin-bottom:20px; color:#2e7d32; }
-
-/* ===== INPUTS ===== */
-input {
-  width:90%; padding:12px; margin:10px 0; border:1px solid #ccc; border-radius:8px; font-size:1em;
-}
-button {
-  width:95%; padding:12px; margin-top:15px; border:none; border-radius:8px;
-  background:#2e7d32; color:#fff; font-size:1em; cursor:pointer; transition:0.3s;
-}
+body { font-family:'Roboto', sans-serif; background:#f0f4f8; margin:0; }
+header { background:#2e7d32; color:#fff; padding:15px; text-align:center; }
+.container { max-width:400px; margin:60px auto; background:#fff; padding:30px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1); text-align:center; }
+h2 { color:#2e7d32; }
+input { width:90%; padding:12px; margin:10px 0; border:1px solid #ccc; border-radius:8px; }
+button { width:95%; padding:12px; background:#2e7d32; color:#fff; border:none; border-radius:8px; cursor:pointer; }
 button:hover { background:#1b5e20; }
-
-/* ===== LINKS ===== */
-p { margin-top:15px; font-size:0.95em; color:#555; }
-p a { color:#2e7d32; text-decoration:none; font-weight:bold; }
+.message { margin-top:10px; font-weight:500; }
+p a { color:#2e7d32; font-weight:bold; text-decoration:none; }
 p a:hover { text-decoration:underline; }
-
-@media(max-width:480px){
-  .register-box { padding:20px; margin:40px auto; }
-}
 </style>
 </head>
 <body>
-
-<header>
-  <h1>🌾 Smart Farming Guidance</h1>
-</header>
-
-<div class="register-box">
+<header><h1>🌾 Smart Farming Guidance</h1></header>
+<div class="container">
   <h2>🧾 Farmer Registration</h2>
-
   <form id="registerForm">
-    <input type="text" name="name" placeholder="Farmer Name" required>
-    <input type="text" name="mobile" placeholder="Mobile Number" required>
-    <input type="password" name="password" placeholder="Password" required>
+    <input type="text" id="name" placeholder="Farmer Name" required>
+    <input type="text" id="mobile" placeholder="Mobile Number" required>
+    <input type="password" id="password" placeholder="Password" required>
     <button type="submit">Register</button>
   </form>
-
+  <div class="message" id="message"></div>
   <p>Already Registered? <a href="/login">Login</a></p>
 </div>
-
 <script>
-// Fetch API for registration
-const registerForm = document.getElementById('registerForm');
-
-registerForm.addEventListener('submit', async (e) => {
+document.getElementById("registerForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-
-  const formData = {
-    name: registerForm.name.value,
-    mobile: registerForm.mobile.value,
-    password: registerForm.password.value
-  };
-
+  const name = document.getElementById("name").value;
+  const mobile = document.getElementById("mobile").value;
+  const password = document.getElementById("password").value;
   try {
-    const response = await fetch(' https://smart-farmer-xwr6.onrender.com/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData)
+    const res = await fetch("/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, mobile, password })
     });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      alert('Registration Successful! Please login.');
-      window.location.href = '/login'; // Redirect to login page
+    const data = await res.json();
+    if (res.ok) {
+      document.getElementById("message").textContent = "✅ Registration successful! Redirecting...";
+      setTimeout(() => window.location.href="/login", 1500);
     } else {
-      alert(data.message || 'Registration failed');
+      document.getElementById("message").textContent = "❌ " + (data.message || "Registration failed");
     }
-  } catch (error) {
-    console.error('Error:', error);
-    alert('Server error. Please try again later.');
+  } catch (err) {
+    document.getElementById("message").textContent = "⚠️ Server error. Try again.";
   }
 });
 </script>
-
 </body>
 </html>
-
-
-
