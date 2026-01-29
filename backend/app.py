@@ -58,22 +58,36 @@ def register():
 def login():
     if request.method == "GET":
         return render_template("login.html")
+
     try:
-        data = request.get_json()
-        mobile = data.get("mobile")
-        password = data.get("password")
+        # JSON (fetch)
+        if request.is_json:
+            data = request.get_json()
+            mobile = data.get("mobile")
+            password = data.get("password")
+        else:
+            # HTML form submit
+            mobile = request.form.get("mobile")
+            password = request.form.get("password")
+
+        if not mobile or not password:
+            return jsonify({"message": "Mobile and password required"}), 400
 
         conn = get_db_connection()
         cur = conn.cursor(dictionary=True)
-        cur.execute("SELECT * FROM users WHERE mobile=%s AND password=%s", (mobile, password))
+        cur.execute(
+            "SELECT * FROM users WHERE mobile=%s AND password=%s",
+            (mobile, password)
+        )
         user = cur.fetchone()
         cur.close()
         conn.close()
 
         if user:
-            return jsonify({"message": "Login successful", "user": user}), 200
+            return jsonify({"message": "Login successful"}), 200
         else:
             return jsonify({"message": "Invalid mobile or password"}), 401
+
     except mysql.connector.Error as e:
         print("Login error:", e)
         return jsonify({"message": "Server error during login"}), 500
@@ -130,4 +144,5 @@ def crop_videos():
 # ---------------- Run ----------------
 if __name__ == "__main__":
     app.run(debug=True)
+
 
