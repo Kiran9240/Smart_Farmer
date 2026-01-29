@@ -1,16 +1,6 @@
 import mysql.connector
 
 def get_db_connection():
-    return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="root",
-        database="farmerdb",
-        port=3307,
-        autocommit=True  # ✅ importantimport mysql.connector
-
-# ---------------- Database Connection ----------------
-def get_db_connection():
     """
     Create and return a new MySQL database connection.
     Update host, user, password, and database with your actual values.
@@ -23,5 +13,3 @@ def get_db_connection():
         port=3307                  # default MySQL port
     )
     return conn
-    )
-
